@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+
+<mapper namespace="com.mapper.ArticleMapper">
+	<select id="listRecentArticle" resultType="Article">
+		select * from article 
+			order by article_id DESC 
+			limit #{n}
+	</select>
+	
+	<select id="getArticleById" resultType="Article">
+		select * from article where article_id = #{id}
+	</select>
+	
+	<select id="findAll" resultType="Article">
+		select * from article order by article_id DESC
+	</select>
+
+	<!-- 添加文章信息 ,要把添加完之后生成的自增主键返回-->
+    <insert id="addArticle" parameterType="Article"  useGeneratedKeys="true" keyProperty="articleId">
+        insert into article
+        (article_user_id, article_title,
+        article_view_count, article_comment_count,
+        article_like_count, article_create_time, article_update_time,
+        article_is_comment, article_status, article_order,
+        article_content, article_summary)
+        
+        values (#{articleUserId}, #{articleTitle},
+        #{articleViewCount},
+        #{articleCommentCount},
+        #{articleLikeCount}, #{articleCreateTime},
+        #{articleUpdateTime},
+        #{articleIsComment}, #{articleStatus}, #{articleOrder},
+        #{articleContent}, #{articleSummary})
+    </insert> 
+    
+    <!-- 添加文章和分类的关联 -->
+    <insert id="addArticleCategory" >
+  	  insert into article_category_ref (article_id,category_id) values (#{articleId},#{categoryId})
+    </insert>
+    
+    <!-- 添加文章和标签的关联 -->
+    <insert id="addArticleTag" >
+  	  insert into article_tag_ref (article_id,tag_id) values (#{articleId},#{tagId})
+    </insert>
+</mapper>

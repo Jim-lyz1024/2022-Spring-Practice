@@ -1,0 +1,510 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="img/logo.png">
+    <title>博客后台-分类列表</title>
+        
+    
+    <link rel="stylesheet" href="plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="css/back.css">
+    <link rel="stylesheet" href="plugin/font-awesome/css/font-awesome.min.css">
+    <style>
+        /*覆盖 layui*/
+        .layui-input-block {
+            margin:0px 10px;
+        }
+        .layui-table {
+            margin-top: 0;
+        }
+        .layui-col-md4 {
+            padding:10px;
+        }
+        .layui-col-md8 {
+            padding:10px;
+        }
+        .layui-btn {
+            margin: 2px 0!important;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo"><a href="/admin" style="color:#009688;">
+        个人博客后台
+        </a>
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/" target="_blank">前台</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">新建</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/article/insert">文章</a></dd>
+                    <dd><a href="/admin/page/insert">页面</a></dd>
+                    <dd><a href="/admin/category/insert">分类</a></dd>
+                    <dd><a href="/admin/notice/insert">公告</a></dd>
+                    <dd><a href="/admin/link/insert">链接</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="uploads/2017/10/20171006225356181.jpg" class="layui-nav-img">
+                    admin</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/user/profile">基本资料</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/admin/logout">退了</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">文章</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/article">全部文章</a></dd>
+                        <dd><a href="/admin/article/insert">写文章</a></dd>
+                        <dd><a href="/admin/category">全部分类</a></dd>
+                        <dd><a href="/admin/tag">全部标签</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">页面</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/page">全部页面</a></dd>
+                        <dd><a href="/admin/page/insert">添加页面</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">
+                        链接
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/link">全部链接</a></dd>
+                        <dd><a href="/admin/link/insert">添加链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">公告</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/notice">全部公告</a></dd>
+                        <dd><a href="/admin/notice/insert">添加公告</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/admin/comment">
+                        评论
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">
+                        用户
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/user">全部用户</a></dd>
+                        <dd><a href="/admin/user/insert">添加用户</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/menu">菜单</a></dd>
+                        <dd><a href="/admin/options">主要选项</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding:15px;">
+            <blockquote class="layui-elem-quote">
+				        <span class="layui-breadcrumb" lay-separator="/">
+				              <a href="/admin">首页</a>
+				              <a href="/admin/category">分类列表</a>
+				              <a><cite>添加分类</cite></a>
+				        </span>
+				    </blockquote>
+   
+    
+    <div class="layui-row">
+        <div class="layui-col-md4">
+            <form class="layui-form"  method="post" id="myForm" action="/admin/category/insertSubmit">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <strong>添加分类</strong>
+                    </div>
+                    <div class="layui-input-block">
+                        名称 <span style="color: #FF5722; ">*</span>
+                        <input type="text" name="categoryName" placeholder="请输入分类名称" autocomplete="off" class="layui-input" required>
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        父节点 <span style="color: #FF5722; ">*</span>
+                        <select name="categoryPid" class="layui-input" required>
+                            <option value="0">无</option>
+                            <option value="1">Java</option>
+                                <option value="10">计算机科学</option>
+                                <option value="15">其他技术</option>
+                                </select>
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        分类描述
+                        <input type="text" name="categoryDescription" placeholder="请输入分类描述" autocomplete="off" class="layui-input" >
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        图标样式
+                        <input type="text" name="categoryIcon" placeholder="请输入图标样式,如 fa fa-coffee" autocomplete="off" class="layui-input" >
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="formDemo" type="submit">添加</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-col-md8" >
+            <table class="layui-table" >
+                <colgroup>
+                    <col width="300">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="50">
+                    <col width="50">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>文章数</th>
+                    <th>操作</th>
+                    <th>ID</th>
+                    <th>pid</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                            <td>
+                                <a href="/category/1" target="_blank">Java</a>
+                            </td>
+                            <td>
+                                <a href="/category/1" target="_blank">16</a>
+                            </td>
+                            <td>
+                                <a href="/admin/category/edit/1" class="layui-btn layui-btn-mini">编辑</a>
+                                </td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                                    <td>
+                                        <a href="/category/2" target="_blank">——Java基础</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/2" target="_blank">5</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/2" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">2</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/3" target="_blank">——Core Java</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/3" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/3" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/3" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">3</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/4" target="_blank">——多线程并发编程</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/4" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/4" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/4" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">4</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/5" target="_blank">——Sockets和IO</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/5" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/5" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/5" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">5</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/6" target="_blank">——设计模式和反射</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/6" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/6" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/6" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">6</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/7" target="_blank">——JVM</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/7" target="_blank">1</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/7" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">7</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/8" target="_blank">——JavaWeb</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/8" target="_blank">3</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/8" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">8</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/9" target="_blank">——Java框架</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/9" target="_blank">7</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/9" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">9</td>
+                                    <td>1</td>
+                                </tr>
+                            <tr>
+                            <td>
+                                <a href="/category/10" target="_blank">计算机科学</a>
+                            </td>
+                            <td>
+                                <a href="/category/10" target="_blank">7</a>
+                            </td>
+                            <td>
+                                <a href="/admin/category/edit/10" class="layui-btn layui-btn-mini">编辑</a>
+                                </td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                                    <td>
+                                        <a href="/category/11" target="_blank">——数据结构和算法</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/11" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/11" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/11" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">11</td>
+                                    <td>10</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/12" target="_blank">——操作系统</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/12" target="_blank">1</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/12" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">12</td>
+                                    <td>10</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/13" target="_blank">——数据库</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/13" target="_blank">5</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/13" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">13</td>
+                                    <td>10</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/14" target="_blank">——计算机网络</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/14" target="_blank">1</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/14" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">14</td>
+                                    <td>10</td>
+                                </tr>
+                            <tr>
+                            <td>
+                                <a href="/category/15" target="_blank">其他技术</a>
+                            </td>
+                            <td>
+                                <a href="/category/15" target="_blank">5</a>
+                            </td>
+                            <td>
+                                <a href="/admin/category/edit/15" class="layui-btn layui-btn-mini">编辑</a>
+                                </td>
+                            <td>15</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                                    <td>
+                                        <a href="/category/16" target="_blank">——消息服务</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/16" target="_blank">1</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/16" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">16</td>
+                                    <td>15</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/17" target="_blank">——缓存服务</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/17" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/17" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/17" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">17</td>
+                                    <td>15</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/100000003" target="_blank">——微服务</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/100000003" target="_blank">2</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/100000003" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">100000003</td>
+                                    <td>15</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/100000004" target="_blank">——搜索引擎</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/100000004" target="_blank">1</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/100000004" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">100000004</td>
+                                    <td>15</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/100000005" target="_blank">——权限框架</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/100000005" target="_blank">0</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/100000005" class="layui-btn layui-btn-mini">编辑</a>
+                                        <a href="/admin/category/delete/100000005" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+                                        </td>
+                                    <td class="cate-parent">100000005</td>
+                                    <td>15</td>
+                                </tr>
+                            <tr>
+                                    <td>
+                                        <a href="/category/100000006" target="_blank">——开发利器</a>
+                                    </td>
+                                    <td>
+                                        <a href="/category/100000006" target="_blank">1</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/category/edit/100000006" class="layui-btn layui-btn-mini">编辑</a>
+                                        </td>
+                                    <td class="cate-parent">100000006</td>
+                                    <td>15</td>
+                                </tr>
+                            </tbody>
+            </table>
+            <blockquote class="layui-elem-quote layui-quote-nm">
+                温馨提示：
+                <ul>
+                    <li>分类最多只有两级，一级分类pid=0，二级分类pid=其父节点id</li>
+                    <li>如果该分类包含文章，将不可删除</li>
+                </ul>
+            </blockquote>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+       © 这里展示一些提示性信息 <a href="#" target="_blank">其他导航</a> / <a href="#" target="_blank">其他导航</a>
+    </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/plugin/layui/layui.all.js"></script>
+<script src="/js/back.js"></script>
+
+
+</body>
+</html>

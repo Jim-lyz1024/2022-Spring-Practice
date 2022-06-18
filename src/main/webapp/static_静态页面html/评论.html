@@ -1,0 +1,505 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="img/logo.png">
+    
+    <title>博客后台 - 评论列表</title>
+    <link rel="stylesheet" href="plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="css/back.css">
+    <link rel="stylesheet" href="plugin/font-awesome/css/font-awesome.min.css">
+    <style>
+        /*覆盖 layui*/
+        .layui-table {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo"><a href="/admin" style="color:#009688;">
+        风吟博客后台
+        </a>
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/" target="_blank">前台</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">新建</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/article/insert">文章</a></dd>
+                    <dd><a href="/admin/page/insert">页面</a></dd>
+                    <dd><a href="/admin/category/insert">分类</a></dd>
+                    <dd><a href="/admin/notice/insert">公告</a></dd>
+                    <dd><a href="/admin/link/insert">链接</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="uploads/2017/10/20171006225356181.jpg" class="layui-nav-img">
+                    admin</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/user/profile">基本资料</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/admin/logout">退了</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">文章</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/article">全部文章</a></dd>
+                        <dd><a href="/admin/article/insert">写文章</a></dd>
+                        <dd><a href="/admin/category">全部分类</a></dd>
+                        <dd><a href="/admin/tag">全部标签</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">页面</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/page">全部页面</a></dd>
+                        <dd><a href="/admin/page/insert">添加页面</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">
+                        链接
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/link">全部链接</a></dd>
+                        <dd><a href="/admin/link/insert">添加链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">公告</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/notice">全部公告</a></dd>
+                        <dd><a href="/admin/notice/insert">添加公告</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/admin/comment">
+                        评论
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">
+                        用户
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/user">全部用户</a></dd>
+                        <dd><a href="/admin/user/insert">添加用户</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/menu">菜单</a></dd>
+                        <dd><a href="/admin/options">主要选项</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <blockquote class="layui-elem-quote">
+        <span class="layui-breadcrumb" lay-separator="/">
+              <a href="/admin">首页</a>
+              <a><cite>评论列表</cite></a>
+        </span>
+    </blockquote>
+    <div class="layui-tab layui-tab-card">
+        <table class="layui-table" lay-even lay-skin="nob">
+            <colgroup>
+                <col width="100">
+                <col width="300">
+                <col width=200">
+                <col width="150">
+                <col width="50">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>作者</th>
+                <th>评论内容</th>
+                <th>回复至</th>
+                <th>提交于</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                    <td>
+                        <img src="http://cn.gravatar.com/avatar/01459f970ce17cd9e1e783160ecc951c?s=128&d=identicon&r=PG" alt="" width="64px">
+                        <strong>小程</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="https://liuyanzhao.com">你好</a>
+                        22222<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/31">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/31">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(31)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年12月24日 10:24:13</td>
+                    <td>31</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="http://cn.gravatar.com/avatar/01459f970ce17cd9e1e783160ecc951c?s=128&d=identicon&r=PG" alt="" width="64px">
+                        <strong>小程</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="https://xxx.com">1111</a>
+                        2<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/30">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/30">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(30)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年12月24日 10:24:56</td>
+                    <td>30</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="http://cn.gravatar.com/avatar/88d5cb704d88bdad67d000eee4782000?s=128&d=identicon&r=PG" alt="" width="64px">
+                        <strong>1111</strong>
+                        <br>
+                            <br>
+                            1234@qq.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="">小程</a>
+                        1<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/29">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/29">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(29)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年12月24日 10:24:37</td>
+                    <td>29</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="" alt="" width="64px">
+                        <strong>小程</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="https://xxx.com">小程</a>
+                        <div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/28">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/28">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(28)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/17"
+                           target="_blank">java中ImageIcon路径问题</a>
+                    </td>
+                    <td>
+                        2018年12月21日 21:21:37</td>
+                    <td>28</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="" alt="" width="64px">
+                        <strong>小程</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="https://xxx.com">小程</a>
+                        11111111<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/25">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/25">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(25)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/17"
+                           target="_blank">java中ImageIcon路径问题</a>
+                    </td>
+                    <td>
+                        2018年11月25日 14:25:26</td>
+                    <td>25</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="" alt="" width="64px">
+                        <strong>小程</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="https://xxx.com">你好</a>
+                        sss<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/24">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/24">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(24)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年11月25日 13:25:18</td>
+                    <td>24</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="" alt="" width="64px">
+                        <strong>小程</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="https://xxx.com">你好</a>
+                        1111111<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/23">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/23">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(23)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年11月25日 13:25:19</td>
+                    <td>23</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="http://cn.gravatar.com/avatar/487f87505f619bf9ea08f26bb34f8118?s=128&d=identicon&r=PG" alt="" width="64px">
+                        <strong>你好</strong>
+                        <br>
+                            <br>
+                            123@qq.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        ssss<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/22">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/22">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(22)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年11月25日 13:25:57</td>
+                    <td>22</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="http://cn.gravatar.com/avatar/01459f970ce17cd9e1e783160ecc951c?s=128&d=identicon&r=PG" alt="" width="64px">
+                        <strong>言曌</strong>
+                        <br>
+                            https://xxx.com<br>
+                            admin@xxx.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        ssssss<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/21">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/21">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(21)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/6"
+                           target="_blank">Hibernate 简单的CURD操作</a>
+                    </td>
+                    <td>
+                        2018年11月25日 13:25:29</td>
+                    <td>21</td>
+
+                </tr>
+            <tr>
+                    <td>
+                        <img src="http://cn.gravatar.com/avatar/3ae8728fec3cd5cbfe99c4b966695f03?s=128&d=identicon&r=PG" alt="" width="64px">
+                        <strong>saysky3</strong>
+                        <br>
+                            <br>
+                            847064370@qq.com<br>
+                            0:0:0:0:0:0:0:1</td>
+                    <td class="dashboard-comment-wrap">
+                        <span class="at">@ </span><a href="">saysky2</a>
+                        33333<div class="row-actions">
+                                     <span class="">
+                                        <a href="/admin/comment/reply/20">
+                                            回复
+                                        </a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="/admin/comment/edit/20">编辑</a>
+                                     </span>
+                            <span class=""> |
+                                        <a href="javascript:void(0)" onclick="deleteComment(20)">删除</a>
+                                     </span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="/article/2"
+                           target="_blank">springmvc 表单中文乱码解决方案</a>
+                    </td>
+                    <td>
+                        2018年11月24日 23:24:45</td>
+                    <td>20</td>
+
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div id="nav" style="">
+            <nav class="navigation pagination" role="navigation">
+        <div class="nav-links">
+            <a class="page-numbers current">1</a>
+                    <a class="page-numbers" href="/admin/comment?pageIndex=2">2</a>
+                    <a class="page-numbers" href="/admin/comment?pageIndex=3">3</a>
+                    <a class="page-numbers"
+                       href="/admin/comment?pageIndex=2">
+                        <i class="layui-icon">&#xe602;</i>
+                    </a>
+                </div>
+    </nav>
+    </div>
+    </div>
+
+
+</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © 这里展示一些提示性信息 <a href="#" target="_blank">其他导航</a> / <a href="#" target="_blank">其他导航</a>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="plugin/layui/layui.all.js"></script>
+<script src="js/back.js"></script>
+
+</body>
+</html>

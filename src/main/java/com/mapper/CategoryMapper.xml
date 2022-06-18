@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" > 
+	
+<mapper namespace="com.mapper.CategoryMapper">
+	<select id="listCategoryByArticleId" resultType="Category">
+		select * from category where category_id in
+		( select category_id from article_category_ref where article_id= #{articleId})
+	</select>
+	
+	<select id="listCategory" resultType="Category">
+		select * from category
+	</select>
+</mapper> 

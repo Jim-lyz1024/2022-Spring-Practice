@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/img/logo.png">
+    <title>
+         博客后台 - 添加链接
+            
+      
+    </title>
+    <link rel="stylesheet" href="plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="css/back.css">
+    <link rel="stylesheet" href="plugin/font-awesome/css/font-awesome.min.css">
+    <style>
+        /*覆盖 layui*/
+        .layui-input-block {
+            margin:0px 10px;
+        }
+        .layui-table {
+            margin-top: 0;
+        }
+        .layui-col-md4 {
+            padding:10px;
+        }
+        .layui-col-md8 {
+            padding:10px;
+        }
+        .layui-btn {
+            margin: 2px 0!important;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo"><a href="/admin" style="color:#009688;">
+         博客后台
+        </a>
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/" target="_blank">前台</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">新建</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/article/insert">文章</a></dd>
+                    <dd><a href="/admin/page/insert">页面</a></dd>
+                    <dd><a href="/admin/category/insert">分类</a></dd>
+                    <dd><a href="/admin/notice/insert">公告</a></dd>
+                    <dd><a href="/admin/link/insert">链接</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="uploads/2017/10/20171006225356181.jpg" class="layui-nav-img">
+                    admin</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/admin/user/profile">基本资料</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/admin/logout">退了</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">文章</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/article">全部文章</a></dd>
+                        <dd><a href="/admin/article/insert">写文章</a></dd>
+                        <dd><a href="/admin/category">全部分类</a></dd>
+                        <dd><a href="/admin/tag">全部标签</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">页面</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/page">全部页面</a></dd>
+                        <dd><a href="/admin/page/insert">添加页面</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">
+                        链接
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/link">全部链接</a></dd>
+                        <dd><a href="/admin/link/insert">添加链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">公告</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/notice">全部公告</a></dd>
+                        <dd><a href="/admin/notice/insert">添加公告</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/admin/comment">
+                        评论
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">
+                        用户
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/user">全部用户</a></dd>
+                        <dd><a href="/admin/user/insert">添加用户</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/menu">菜单</a></dd>
+                        <dd><a href="/admin/options">主要选项</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <blockquote class="layui-elem-quote">
+        <span class="layui-breadcrumb" lay-separator="/">
+              <a href="/admin">首页</a>
+              <a href="/admin/link">链接列表</a>
+              <a><cite>添加链接</cite></a>
+        </span>
+    </blockquote>
+    <div class="layui-row">
+        <div class="layui-col-md4">
+            <form class="layui-form" method="post" id="myForm" action="/admin/link/insertSubmit">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <strong>编辑链接</strong>
+                    </div>
+                    <input type="hidden" name="linkId" value="">
+                    <div class="layui-input-block">
+                        名称 <span style="color: #FF5722; ">*</span>
+                        <input type="text" name="linkName" value="" autocomplete="off" class="layui-input" required>
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        URL <span style="color: #FF5722; ">*</span>
+                        <input type="text" name="linkUrl" value="" autocomplete="off" class="layui-input" required>
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        联系方式
+                        <input type="text" name="linkOwnerContact" value="" autocomplete="off" class="layui-input" >
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        描述
+                        <input type="text" name="linkDescription" value="" autocomplete="off" class="layui-input" >
+                    </div>
+
+                    <br>
+                    <div class="layui-input-block">
+                         Order
+                        <input type="number" name="linkOrder" value="" autocomplete="off" class="layui-input" min="0" max="10">
+                    </div>
+                    <br>
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-filter="formDemo" type="submit">添加</button>
+                    </div>
+                </div>
+            </form>
+            <blockquote class="layui-elem-quote layui-quote-nm">
+                温馨提示：
+                <ul>
+                    <li>URL：如 http://liuyanzhao.com</li>
+                    <li>Order：默认是0，Order越大排名越靠前</li>
+                </ul>
+            </blockquote>
+        </div>
+        <div class="layui-col-md8">
+            <table class="layui-table" >
+                <colgroup>
+                    <col width="50">
+                    <col width="300">
+                    <col width="100">
+                    <col width="50">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>名称</th>
+                    <th>URL</th>
+                    <th>Order</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                        <td>1</td>
+                        <td>
+                            言曌博客</td>
+                        <td>
+                             http://liuyanzhao.com</td>
+                        <td>
+                            1</td>
+                        <td>
+                            <a href="/admin/link/edit/1" class="layui-btn layui-btn-mini">编辑</a>
+                            <a href="/admin/link/delete/1" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+
+                        </td>
+                    </tr>
+
+                <tr>
+                        <td>6</td>
+                        <td>
+                            开发者社区</td>
+                        <td>
+                             http://codergroup.cn/</td>
+                        <td>
+                            1</td>
+                        <td>
+                            <a href="/admin/link/edit/6" class="layui-btn layui-btn-mini">编辑</a>
+                            <a href="/admin/link/delete/6" class="layui-btn layui-btn-danger layui-btn-mini" onclick="return confirmDelete()">删除</a>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+       © 这里展示一些提示性信息 <a href="#" target="_blank">其他导航</a> / <a href="#" target="_blank">其他导航</a>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="plugin/layui/layui.all.js"></script>
+<script src="js/back.js"></script>
+
+
+</body>
+</html>

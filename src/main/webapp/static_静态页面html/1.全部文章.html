@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+
+<link rel="shortcut icon" href="img/logo.png">
+<title>博客后台- 文章列表</title>
+<link rel="stylesheet" href="plugin/layui/css/layui.css">
+<link rel="stylesheet" href="css/back.css">
+<link rel="stylesheet"
+	href="plugin/font-awesome/css/font-awesome.min.css">
+<style>
+/*覆盖 layui*/
+.layui-input {
+	display: inline-block;
+	width: 33.333% !important;
+}
+
+.layui-input-block {
+	margin: 0px 10px;
+}
+</style>
+</head>
+<body>
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">
+				<a href="/admin" style="color: #009688;"> 个人博客后台 </a>
+			</div>
+			<!-- 头部区域（可配合layui已有的水平导航） -->
+			<ul class="layui-nav layui-layout-left">
+				<li class="layui-nav-item"><a href="/" target="_blank">前台</a></li>
+				<li class="layui-nav-item"><a href="javascript:;">新建</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="/admin/article/insert">文章</a>
+						</dd>
+						<dd>
+							<a href="/admin/page/insert">页面</a>
+						</dd>
+						<dd>
+							<a href="/admin/category/insert">分类</a>
+						</dd>
+						<dd>
+							<a href="/admin/notice/insert">公告</a>
+						</dd>
+						<dd>
+							<a href="/admin/link/insert">链接</a>
+						</dd>
+					</dl></li>
+			</ul>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item"><a href="javascript:;"> <img
+						src="uploads/2017/10/20171006225356181.jpg" class="layui-nav-img">
+						admin
+				</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="/admin/user/profile">基本资料</a>
+						</dd>
+					</dl></li>
+				<li class="layui-nav-item"><a href="/admin/logout">退出</a></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<li class="layui-nav-item layui-nav-itemed"><a class=""
+						href="javascript:;">文章</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="/admin/article">全部文章</a>
+							</dd>
+							<dd>
+								<a href="/admin/article/insert">写文章</a>
+							</dd>
+							<dd>
+								<a href="/admin/category">全部分类</a>
+							</dd>
+							<dd>
+								<a href="/admin/tag">全部标签</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="javascript:;">页面</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="/admin/page">全部页面</a>
+							</dd>
+							<dd>
+								<a href="/admin/page/insert">添加页面</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a class="" href="javascript:;">
+							链接 </a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="/admin/link">全部链接</a>
+							</dd>
+							<dd>
+								<a href="/admin/link/insert">添加链接</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="javascript:;">公告</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="/admin/notice">全部公告</a>
+							</dd>
+							<dd>
+								<a href="/admin/notice/insert">添加公告</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="/admin/comment"> 评论 </a></li>
+					<li class="layui-nav-item"><a class="" href="javascript:;">
+							用户 </a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="/admin/user">全部用户</a>
+							</dd>
+							<dd>
+								<a href="/admin/user/insert">添加用户</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="javascript:;">设置</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="/admin/menu">菜单</a>
+							</dd>
+							<dd>
+								<a href="/admin/options">主要选项</a>
+							</dd>
+						</dl></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body">
+			<!-- 内容主体区域 -->
+			<div style="padding: 15px;">
+				<!-- 下面这里的内容是要重写的 -->
+				<blockquote class="layui-elem-quote">
+					<span class="layui-breadcrumb" lay-separator="/"> <a
+						href="/admin">首页</a> <a><cite>文章列表</cite></a>
+					</span>
+				</blockquote>
+
+				<div class="layui-tab layui-tab-card">
+					<form id="articleForm" method="post">
+						<input type="hidden" name="currentUrl" id="currentUrl" value="">
+						<table class="layui-table">
+							<colgroup>
+								<col width="300">
+								<col width="150">
+								<col width="100">
+								<col width="150">
+								<col width="100">
+								<col width="50">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>标题</th>
+									<th>所属分类</th>
+									<th>状态</th>
+									<th>发布时间</th>
+									<th>操作</th>
+									<th>id</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="/article/33" target="_blank"> MySQL常用命令语句</a></td>
+									<td><a href="/category/10" target="_blank">计算机科学</a>
+										&nbsp; <a href="/category/13" target="_blank">数据库</a> &nbsp;</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 21:06:52</td>
+									<td><a href="/admin/article/edit/33"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(33)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>33</td>
+								</tr>
+								<tr>
+									<td><a href="/article/32" target="_blank">
+											Docker_入门？只要这篇就够了！（纯干货适合0基础小白）</a></td>
+									<td><a href="/category/15" target="_blank">其他技术</a> &nbsp;
+										<a href="/category/100000006" target="_blank">开发利器</a> &nbsp;
+									</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 21:05:05</td>
+									<td><a href="/admin/article/edit/32"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(32)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>32</td>
+								</tr>
+								<tr>
+									<td><a href="/article/31" target="_blank"> RocketMQ
+											实战之快速入门</a></td>
+									<td><a href="/category/15" target="_blank">其他技术</a> &nbsp;
+										<a href="/category/16" target="_blank">消息服务</a> &nbsp;</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 21:02:40</td>
+									<td><a href="/admin/article/edit/31"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(31)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>31</td>
+								</tr>
+								<tr>
+									<td><a href="/article/30" target="_blank"> SpringBoot
+											+ mongodb 整合, 记录网站操作日志，常用查询操作</a></td>
+									<td><a href="/category/10" target="_blank">计算机科学</a>
+										&nbsp; <a href="/category/13" target="_blank">数据库</a> &nbsp;</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 21:01:24</td>
+									<td><a href="/admin/article/edit/30"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(30)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>30</td>
+								</tr>
+								<tr>
+									<td><a href="/article/29" target="_blank">
+											IDEA启动EDAS项目</a></td>
+									<td><a href="/category/15" target="_blank">其他技术</a> &nbsp;
+										<a href="/category/100000003" target="_blank">微服务</a> &nbsp;</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 21:00:24</td>
+									<td><a href="/admin/article/edit/29"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(29)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>29</td>
+								</tr>
+								<tr>
+									<td><a href="/article/28" target="_blank"> SpringCloud
+											中使用 Eureka 和 Feign 实现增删改查</a></td>
+									<td><a href="/category/15" target="_blank">其他技术</a> &nbsp;
+										<a href="/category/100000003" target="_blank">微服务</a> &nbsp;</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 20:58:22</td>
+									<td><a href="/admin/article/edit/28"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(28)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>28</td>
+								</tr>
+								<tr>
+									<td><a href="/article/27" target="_blank"> SpringCloud
+											中使用 Eureka 和 Feign 实现增删改查</a></td>
+									<td><a href="/category/100000000" target="_blank">未分类</a>
+										&nbsp;</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 20:56:50</td>
+									<td><a href="/admin/article/edit/27"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(27)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>27</td>
+								</tr>
+								<tr>
+									<td><a href="/article/26" target="_blank"> SpringBoot
+											整合 elasticsearch 实例</a></td>
+									<td><a href="/category/15" target="_blank">其他技术</a> &nbsp;
+										<a href="/category/100000004" target="_blank">搜索引擎</a> &nbsp;
+									</td>
+									<td><a href="/admin/article?status=1"> <span
+											style="color: #5FB878;">已发布</span>
+									</a></td>
+									<td>2018-11-25 20:42:58</td>
+									<td><a href="/admin/article/edit/26"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(26)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>26</td>
+								</tr>
+								<tr>
+									<td><a href="/article/25" target="_blank"> sssssssss</a></td>
+									<td><a href="/category/10" target="_blank">计算机科学</a>
+										&nbsp; <a href="/category/12" target="_blank">操作系统</a> &nbsp;
+									</td>
+									<td><a href="/admin/article?status=0"> <span
+											style="color: #FF5722;">草稿</span>
+									</a></td>
+									<td>2018-11-25 17:22:10</td>
+									<td><a href="/admin/article/edit/25"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(25)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>25</td>
+								</tr>
+								<tr>
+									<td><a href="/article/24" target="_blank"> sssss</a></td>
+									<td><a href="/category/10" target="_blank">计算机科学</a>
+										&nbsp; <a href="/category/13" target="_blank">数据库</a> &nbsp;</td>
+									<td><a href="/admin/article?status=0"> <span
+											style="color: #FF5722;">草稿</span>
+									</a></td>
+									<td>2018-11-25 17:19:09</td>
+									<td><a href="/admin/article/edit/24"
+										class="layui-btn layui-btn-mini">编辑</a> <a
+										href="javascript:void(0)" onclick="deleteArticle(24)"
+										class="layui-btn layui-btn-danger layui-btn-mini">删除</a></td>
+									<td>24</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+					<nav class="navigation pagination" role="navigation">
+						<div class="nav-links">
+							<a class="page-numbers current">1</a> <a class="page-numbers"
+								href="/admin/article?pageIndex=2">2</a> <a class="page-numbers"
+								href="/admin/article?pageIndex=3">3</a> <a class="page-numbers"
+								href="/admin/article?pageIndex=2"> <i class="layui-icon">&#xe602;</i>
+							</a>
+						</div>
+					</nav>
+				</div>
+				<!-- 重写结束 -->
+
+			</div>
+		</div>
+
+		<div class="layui-footer">
+			<!-- 底部固定区域 -->
+			© 这里展示一些提示性信息 <a href="#" target="_blank">其他导航</a> / <a href="#"
+				target="_blank">其他导航</a>
+		</div>
+	</div>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="plugin/layui/layui.all.js"></script>
+	<script src="js/back.js"></script>
+
+</body>
+</html>
